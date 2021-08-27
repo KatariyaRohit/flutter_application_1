@@ -9,12 +9,16 @@ class Homepage extends StatelessWidget {
     final int days = 40;
     // ignore: unused_local_variable
     final String name = "Flutter App";
-    return Material(
-      child: Center(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Catalog App"),
+      ),
+      body: Center(
         child: Container(
-          child: Text("Welcome to $days day $name"),
+          child: Text("Welcome to $days by $name"),
         ),
       ),
+      drawer: Drawer(),
     );
   }
 }
