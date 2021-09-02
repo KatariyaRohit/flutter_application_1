@@ -20,34 +20,39 @@ class _HomepageState extends State<Homepage> {
   }
 
   loadData() async {
+    await Future.delayed(Duration(seconds: 2));
     final catalogjson =
         await rootBundle.loadString("assets/files/catalog.json");
     final decodeData = jsonDecode(catalogjson);
     var productData = decodeData["products"];
-    print(productData);
+    CatlogModel.items =
+        List.from(productData).map<Item>((item) => Item.fromMap(item)).toList();
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    final dummylist = List.generate(15, (index) => CatlogModel.items[0]);
-    // ignore: unused_local_variable
-    final int days = 40;
-    // ignore: unused_local_variable
-    final String name = "Flutter App";
+    //dummy list for data
+    // final dummylist = List.generate(15, (index) => CatlogModel.items[0]);
     return Scaffold(
       appBar: AppBar(
         title: Text("Catalog App"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(18.10),
-        child: ListView.builder(
-          itemCount: dummylist.length,
-          itemBuilder: (context, index) {
-            return ItemWidgets(
-              item: dummylist[index],
-            );
-          },
-        ),
+        // ignore: unnecessary_null_comparison
+        child: (CatlogModel.items != null && CatlogModel.items.isNotEmpty)
+            ? ListView.builder(
+                itemCount: CatlogModel.items.length,
+                itemBuilder: (context, index) {
+                  return ItemWidgets(
+                    item: CatlogModel.items[index],
+                  );
+                },
+              )
+            : Center(
+                child: CircularProgressIndicator(),
+              ),
       ),
       drawer: MyDrawer(),
     );
